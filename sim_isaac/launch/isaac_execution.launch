@@ -1,0 +1,39 @@
+<?xml version="1.0" ?>
+<launch>
+  <param name="use_sim_time" value="true" />
+
+  <arg name="debug" default="false" />
+  <!-- <arg name="pipeline" default="ompl" /> -->
+  <!-- <arg name="control_type" default="fake" /> -->
+  <arg name="use_gui" default="true" />
+
+  <node pkg="sim_isaac" name="combined_joints_publisher" type="combined_joints_publisher_camera.py" />
+
+  <include file="$(find moveit_config_m0609_robotiq_2f_85)/launch/planning_context.launch">
+    <arg name="load_robot_description" value="true"/>
+  </include>
+
+  <node name="joint_state_desired_publisher" pkg="topic_tools" type="relay" args="/joint_states /joint_states_desired" />
+  <node name="joint_command_publisher" pkg="topic_tools" type="relay" args="/move_group/fake_controller_joint_states /joint_command_desired" />
+  
+  <include file="$(find moveit_config_m0609_robotiq_2f_85)/launch/move_group.launch">
+    <arg name="allow_trajectory_execution" value="true"/>
+    <!-- <arg name="moveit_controller_manager" value="$(arg control_type)"/> -->
+    <arg name="info" value="true"/>
+    <arg name="debug" value="$(arg debug)"/>
+    <!-- <arg name="pipeline" value="$(arg pipeline)"  /> -->
+  </include>
+
+  <!-- Rviz -->
+  <arg name="use_rviz" default="true" />
+  <include file="$(find moveit_config_m0609_robotiq_2f_85)/launch/moveit_rviz.launch" if="$(arg use_rviz)">
+      <arg name="rviz_config" value="$(find moveit_config_m0609_robotiq_2f_85)/launch/moveit.rviz"/>
+  </include>
+
+  <!-- Run Rviz and load the default config to see the state of the move_group node -->
+  <!-- <include file="$(dirname)/moveit_rviz.launch" if="$(arg use_rviz)">
+    <arg name="rviz_config" value="$(dirname)/moveit.rviz"/>
+    <arg name="debug" value="$(arg debug)"/>
+  </include> -->
+  
+</launch>
