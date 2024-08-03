@@ -1,0 +1,156 @@
+#usda 1.0
+(
+    defaultPrim = "Root"
+    upAxis = "Z"
+)
+
+def Xform "Root"
+{
+    def OmniGraph "ActionGraph"
+    {
+        token evaluationMode = "Automatic"
+        token evaluator:type = "execution"
+        token fabricCacheBacking = "Shared"
+        int2 fileFormatVersion = (1, 5)
+        token pipelineStage = "pipelineStageSimulation"
+        token ui:displayGroup = "Material Graphs"
+        token ui:displayName = "ActionGraph"
+        int ui:order = 1024
+        uniform token[] xformOpOrder = []
+
+        def OmniGraphNode "isaac_read_simulation_time" (
+            apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            custom bool inputs:resetOnStop = 0
+            custom int64 inputs:swhFrameNumber = 0
+            token node:type = "omni.isaac.core_nodes.IsaacReadSimulationTime"
+            int node:typeVersion = 1
+            custom double outputs:simulationTime
+            uniform token ui:nodegraph:node:expansionState = "open"
+            uniform float2 ui:nodegraph:node:pos = (112.21321, 266.19098)
+        }
+
+        def OmniGraphNode "on_playback_tick" (
+            apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            token node:type = "omni.graph.action.OnPlaybackTick"
+            int node:typeVersion = 1
+            custom double outputs:deltaSeconds
+            custom double outputs:frame
+            custom uint outputs:tick (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            custom double outputs:time
+            uniform token ui:nodegraph:node:expansionState = "open"
+            uniform float2 ui:nodegraph:node:pos = (152.41422, 456.01413)
+        }
+
+        def OmniGraphNode "ros1_publish_transform_tree" (
+            apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            custom uint inputs:execIn
+            uint inputs:execIn.connect = </Root/ActionGraph/on_playback_tick.outputs:tick>
+            custom string inputs:nodeNamespace = ""
+            custom rel inputs:parentPrim
+            custom uint64 inputs:queueSize = 10
+            custom rel inputs:targetPrims = </World/m0609_robotiq_2f_85>
+            custom double inputs:timeStamp = 0
+            double inputs:timeStamp.connect = </Root/ActionGraph/isaac_read_simulation_time.outputs:simulationTime>
+            custom string inputs:topicName = "/tf"
+            token node:type = "omni.isaac.ros_bridge.ROS1PublishTransformTree"
+            int node:typeVersion = 1
+            uniform token ui:nodegraph:node:expansionState = "open"
+            uniform float2 ui:nodegraph:node:pos = (458.3888, 99.153076)
+        }
+
+        def OmniGraphNode "ros1_publish_clock" (
+            apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            custom uint inputs:execIn
+            uint inputs:execIn.connect = </Root/ActionGraph/on_playback_tick.outputs:tick>
+            custom string inputs:nodeNamespace = ""
+            custom uint64 inputs:queueSize = 10
+            custom double inputs:timeStamp = 0
+            double inputs:timeStamp.connect = </Root/ActionGraph/isaac_read_simulation_time.outputs:simulationTime>
+            custom string inputs:topicName = "clock"
+            token node:type = "omni.isaac.ros_bridge.ROS1PublishClock"
+            int node:typeVersion = 1
+            uniform token ui:nodegraph:node:expansionState = "open"
+            uniform float2 ui:nodegraph:node:pos = (525.76654, 337.22)
+        }
+
+        def OmniGraphNode "ros1_subscribe_joint_state" (
+            apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            custom uint inputs:execIn
+            uint inputs:execIn.connect = </Root/ActionGraph/on_playback_tick.outputs:tick>
+            custom string inputs:nodeNamespace = ""
+            custom uint64 inputs:queueSize = 10
+            custom string inputs:topicName = "joint_command"
+            token node:type = "omni.isaac.ros_bridge.ROS1SubscribeJointState"
+            int node:typeVersion = 2
+            custom double[] outputs:effortCommand = []
+            custom uint outputs:execOut (
+                customData = {
+                    bool isExecution = 1
+                }
+            )
+            custom token[] outputs:jointNames = []
+            custom double[] outputs:positionCommand = []
+            custom double outputs:timeStamp = 0
+            custom double[] outputs:velocityCommand = []
+            uniform token ui:nodegraph:node:expansionState = "open"
+            uniform float2 ui:nodegraph:node:pos = (414.94318, 572.83746)
+        }
+
+        def OmniGraphNode "ros1_publish_joint_state" (
+            apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            custom uint inputs:execIn
+            uint inputs:execIn.connect = </Root/ActionGraph/on_playback_tick.outputs:tick>
+            custom string inputs:nodeNamespace = ""
+            custom uint64 inputs:queueSize = 10
+            custom rel inputs:targetPrim = </World/m0609_robotiq_2f_85>
+            custom double inputs:timeStamp = 0
+            double inputs:timeStamp.connect = </Root/ActionGraph/isaac_read_simulation_time.outputs:simulationTime>
+            custom string inputs:topicName = "joint_states"
+            token node:type = "omni.isaac.ros_bridge.ROS1PublishJointState"
+            int node:typeVersion = 1
+            uniform token ui:nodegraph:node:expansionState = "open"
+            uniform float2 ui:nodegraph:node:pos = (766.18274, 224.08295)
+        }
+
+        def OmniGraphNode "articulation_controller" (
+            apiSchemas = ["NodeGraphNodeAPI"]
+        )
+        {
+            custom double[] inputs:effortCommand = []
+            double[] inputs:effortCommand.connect = </Root/ActionGraph/ros1_subscribe_joint_state.outputs:effortCommand>
+            custom uint inputs:execIn
+            uint inputs:execIn.connect = </Root/ActionGraph/on_playback_tick.outputs:tick>
+            custom int[] inputs:jointIndices = []
+            custom token[] inputs:jointNames = []
+            token[] inputs:jointNames.connect = </Root/ActionGraph/ros1_subscribe_joint_state.outputs:jointNames>
+            custom double[] inputs:positionCommand = []
+            double[] inputs:positionCommand.connect = </Root/ActionGraph/ros1_subscribe_joint_state.outputs:positionCommand>
+            custom string inputs:robotPath = "/World/m0609_robotiq_2f_85"
+            custom rel inputs:targetPrim = </World/m0609_robotiq_2f_85>
+            custom bool inputs:usePath = 1
+            custom double[] inputs:velocityCommand = []
+            double[] inputs:velocityCommand.connect = </Root/ActionGraph/ros1_subscribe_joint_state.outputs:velocityCommand>
+            token node:type = "omni.isaac.core_nodes.IsaacArticulationController"
+            int node:typeVersion = 1
+            uniform token ui:nodegraph:node:expansionState = "open"
+            uniform float2 ui:nodegraph:node:pos = (729.4131, 504.09723)
+        }
+    }
+}
+

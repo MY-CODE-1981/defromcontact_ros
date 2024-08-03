@@ -1,0 +1,69 @@
+(icra) initial@W-LEMONGRASSTEA:~/workspace/icra_ws$ rostopic echo /sensors/camera_22/infra1/camera_info -n1
+header: 
+  seq: 12
+  stamp: 
+    secs: 1718613357
+    nsecs:  82678795
+  frame_id: "actual/rhand_forearm_cam_infra1_optical_frame"
+height: 480
+width: 640
+distortion_model: "plumb_bob"
+D: [0.0, 0.0, 0.0, 0.0, 0.0]
+K: [388.68927001953125, 0.0, 324.24267578125, 0.0, 388.68927001953125, 236.72213745117188, 0.0, 0.0, 1.0]
+R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+P: [388.68927001953125, 0.0, 324.24267578125, 0.0, 0.0, 388.68927001953125, 236.72213745117188, 0.0, 0.0, 0.0, 1.0, 0.0]
+binning_x: 0
+binning_y: 0
+roi: 
+  x_offset: 0
+  y_offset: 0
+  height: 0
+  width: 0
+  do_rectify: False
+  
+  (icra) initial@W-LEMONGRASSTEA:~/workspace/icra_ws$ rostopic echo /sensors/camera_22/infra2/camera_info -n1
+header: 
+  seq: 0
+  stamp: 
+    secs: 1718613320
+    nsecs: 259871960
+  frame_id: "actual/rhand_forearm_cam_infra1_optical_frame"
+height: 480
+width: 640
+distortion_model: "plumb_bob"
+D: [0.0, 0.0, 0.0, 0.0, 0.0]
+K: [388.68927001953125, 0.0, 324.24267578125, 0.0, 388.68927001953125, 236.72213745117188, 0.0, 0.0, 1.0]
+R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+P: [388.68927001953125, 0.0, 324.24267578125, -19.461030960083008, 0.0, 388.68927001953125, 236.72213745117188, 0.0, 0.0, 0.0, 1.0, 0.0]
+binning_x: 0
+binning_y: 0
+roi: 
+  x_offset: 0
+  y_offset: 0
+  height: 0
+  width: 0
+  do_rectify: False
+  
+  
+  (icra) initial@W-LEMONGRASSTEA:~/workspace/icra_ws$ rostopic echo /sensors/camera_22/color/camera_info -n1
+header: 
+  seq: 0
+  stamp: 
+    secs: 1718613392
+    nsecs: 561560631
+  frame_id: "actual/rhand_forearm_cam_color_optical_frame"
+height: 480
+width: 640
+distortion_model: "plumb_bob"
+D: [0.0, 0.0, 0.0, 0.0, 0.0]
+K: [606.8182373046875, 0.0, 321.8463439941406, 0.0, 606.1859741210938, 252.1562042236328, 0.0, 0.0, 1.0]
+R: [1.0, 0.0, 0.0, 0.0, 1.0, 0.0, 0.0, 0.0, 1.0]
+P: [606.8182373046875, 0.0, 321.8463439941406, 0.0, 0.0, 606.1859741210938, 252.1562042236328, 0.0, 0.0, 0.0, 1.0, 0.0]
+binning_x: 0
+binning_y: 0
+roi: 
+  x_offset: 0
+  y_offset: 0
+  height: 0
+  width: 0
+  do_rectify: False

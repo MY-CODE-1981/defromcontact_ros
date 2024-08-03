@@ -1,4 +1,4 @@
-#!/usr/bin/env python3
+#!/home/initial/.pyenv/versions/3.8.10/envs/defom/bin/python
 import rospy
 from sensor_msgs.msg import JointState
 

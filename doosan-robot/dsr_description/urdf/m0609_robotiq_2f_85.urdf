@@ -412,6 +412,23 @@
       <inertia ixx="6.69695624e-05" ixy="5.21511788e-09" ixz="-2.74383009e-08" iyy="7.85088161e-05" iyz="5.41105193e-07" izz="1.41819717e-04"/>
     </inertial>
   </link>
+  
+  <joint name="robotiq_virtual_base_joint" type="fixed">
+    <origin rpy="0 0 0" xyz="0 0 0.115"/>
+    <parent link="link6"/>
+    <child link="robotiq_virtual_base_link"/>
+  </joint>
+  
+  <link name="robotiq_virtual_base_link"/>
+  
+  <joint name="robotiq_virtual_joint" type="fixed">
+    <origin rpy="3.141592653589793 0 0" xyz="0 0 0"/>
+    <parent link="robotiq_virtual_base_link"/>
+    <child link="robotiq_virtual_link"/>
+  </joint>
+  
+  <link name="robotiq_virtual_link"/>
+  
   <joint name="robotiq_coupler_joint" type="fixed">
     <origin rpy="0 0 -1.5707963267948966" xyz="0 0 0.004"/>
     <parent link="link6"/>
